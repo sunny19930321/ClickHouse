@@ -1015,7 +1015,12 @@ struct ConvertThroughParsing
                         SerializationDecimal<typename ToDataType::FieldType>::readText(
                             vec_to[i], read_buffer, ToDataType::maxPrecision(), vec_to.getScale());
                     else
-                        parseImpl<ToDataType>(vec_to[i], read_buffer, local_time_zone);
+                        if (read_buffer.buffer().empty() && (IsDataTypeDecimalOrNumber<ToDataType> || IsDataTypeDateOrDateTime<ToDataType>))
+                        {
+                            current_offset = next_offset;
+                            continue;
+                        } else
+                            parseImpl<ToDataType>(vec_to[i], read_buffer, local_time_zone);
                 }
 
                 if (!isAllRead(read_buffer))
