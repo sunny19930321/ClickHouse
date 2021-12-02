@@ -11,6 +11,7 @@ on:
 jobs:
   ReleasePublish:
     runs-on: [self-hosted, style-checker]
+    container: clickhouse/style-test
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
